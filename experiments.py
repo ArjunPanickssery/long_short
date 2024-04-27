@@ -1,16 +1,17 @@
-from models import get_all_models
+from models import get_model, get_all_models
+from data import load_data, save_data
+from tqdm import tqdm
 
-gpt35, gpt4, llama2, llama3 = get_all_models()
+def process_words(words, model):
+    model_name = model.model_name
+    data = load_data()
+    for word in tqdm(words):
+        if model_name not in data[word]:
+            data[word][model_name] = model.long_score(word)
 
-words2 = [
-    "a",
-    "the",
-    "this",
-    "bench",
-    "hallowed",
-    "screenshotted",
-    "Californication",
-    "abracadabra",
-    "sdjfiagljagdlfug",
-]
-llama3.long_score_batched(words2)
+    save_data(data)    
+    
+if __name__ == '__main__':
+    gpt35 = get_model("gpt35")
+    process_words(['a', 'aa', 'aaa'], gpt35)
+    pass
