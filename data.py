@@ -22,4 +22,5 @@ def load_data():
     return defaultdict(dict, load_from_json(DATA_PATH))
 
 def save_data(data):
-    save_to_json(data, dict(DATA_PATH))
+    save_to_json(dict(data), DATA_PATH)
+

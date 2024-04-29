@@ -244,17 +244,17 @@ class GPTModel(ModelWrapper):
 def get_model(model_name):
     match model_name:
         case 'gpt35':
-            return GPTModel({"model_name": "gpt-3.5-turbo-1106"})
+            return GPTModel({"model_name": "gpt-3.5-turbo-0125"})
         case 'gpt4':
-            return GPTModel({"model_name": "gpt-4-1106-preview"})
+            return GPTModel({"model_name": "gpt-4"})
         case 'llama2':
             return LlamaModel({"model_name": "meta-llama/Llama-2-7b-chat-hf"})
         case 'llama3':
             return LlamaModel({"model_name": "meta-llama/Meta-Llama-3-8B-Instruct"})
         
 def get_all_models():
-    gpt35 = GPTModel({"model_name": "gpt-3.5-turbo-1106"})
-    gpt4 = GPTModel({"model_name": "gpt-4-1106-preview"})
+    gpt35 = GPTModel({"model_name": "gpt-3.5-turbo-0125"})
+    gpt4 = GPTModel({"model_name": "gpt-4"})
     llama2 = LlamaModel({"model_name": "meta-llama/Llama-2-7b-chat-hf"})
     llama3 = LlamaModel({"model_name": "meta-llama/Meta-Llama-3-8B-Instruct"})
 
