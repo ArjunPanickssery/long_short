@@ -1,6 +1,7 @@
 import os
-from dotenv import load_dotenv
+
 import tiktoken
+from dotenv import load_dotenv
 from transformers import AutoTokenizer
 
 load_dotenv()
@@ -17,7 +18,7 @@ llama3_tokenizer = AutoTokenizer.from_pretrained(
 
 
 def clean_token_text(token_text):
-    return token_text.replace("Ġ", " ").replace("_", " ")
+    return token_text.replace("Ġ", " ").replace("▁", " ").strip()
 
 
 def tokenize_gpt(text):
@@ -27,9 +28,17 @@ def tokenize_gpt(text):
     ]
 
 
-def tokenize_llama(text):
-    return [clean_token_text(t) for t in llama2_tokenizer.tokenize(text)]
+def tokenize_llama2(text):
+    return [
+        clean_token_text(t)
+        for t in llama2_tokenizer.tokenize(text)
+        if clean_token_text(t)
+    ]
 
 
 def tokenize_llama3(text):
-    return [clean_token_text(t) for t in llama3_tokenizer.tokenize(text)]
+    return [
+        clean_token_text(t)
+        for t in llama3_tokenizer.tokenize(text)
+        if clean_token_text(t)
+    ]
