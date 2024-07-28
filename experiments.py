@@ -31,8 +31,9 @@ def process_words_from_file(model, file_name):
 
 
 if __name__ == "__main__":
-    models = [get_model("gpt35"), get_model("gpt4")]
-
+    # models = [get_model("gpt35"), get_model("gpt4")]
+    models = [get_model("llama2"), get_model("llama3")]
+    
     for model in models:
         process_all_same_letter_words(model)
         process_words_from_file(model, "random_words.json")
