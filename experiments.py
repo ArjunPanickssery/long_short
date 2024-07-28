@@ -5,6 +5,7 @@ from models import get_all_models, get_model
 
 
 def process_words(words, model):
+    """Calculates p(long) unless the value is already in data.json"""
     model_name = model.model_name
     data = load_data()
     for i in trange(len(words)):
@@ -31,9 +32,8 @@ def process_words_from_file(model, file_name):
 
 
 if __name__ == "__main__":
-    # models = [get_model("gpt35"), get_model("gpt4")]
-    models = [get_model("llama2"), get_model("llama3")]
-    
+    models = [get_model("gpt35"), get_model("gpt4")]
+
     for model in models:
         process_all_same_letter_words(model)
         process_words_from_file(model, "random_words.json")
