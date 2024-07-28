@@ -1,15 +1,15 @@
+import os
 from abc import ABC, abstractmethod
 from collections import Counter
 from math import exp
 
 import torch
 import torch.nn.functional as F
+from dotenv import load_dotenv
 from openai import OpenAI
 from random_word import RandomWords
 from tqdm import tqdm
 from transformers import AutoModelForCausalLM, AutoTokenizer
-import os
-from dotenv import load_dotenv
 
 load_dotenv()
 HF_TOKEN = os.getenv("HF_TOKEN")
@@ -42,9 +42,7 @@ class LlamaModel(ModelWrapper):
         print("Using device: ", self.device)
 
         self.model_name = config["model_name"]
-        self.tokenizer = AutoTokenizer.from_pretrained(
-            self.model_name, token=HF_TOKEN
-        )
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model_name, token=HF_TOKEN)
         self.model = AutoModelForCausalLM.from_pretrained(
             self.model_name, device_map="auto", token=HF_TOKEN
         )
@@ -116,7 +114,7 @@ class LlamaModel(ModelWrapper):
         self.tokenizer.pad_token = self.tokenizer.eos_token
         inputs = torch.tensor(
             self.tokenizer.batch_encode_plus(
-                formatted_prompts, padding='longest'
+                formatted_prompts, padding="longest"
             ).input_ids
         ).to(
             self.model.device
@@ -241,17 +239,19 @@ class GPTModel(ModelWrapper):
             return scores[OUTPUTS[0]] / (scores[OUTPUTS[0]] + scores[OUTPUTS[1]])
         return 0.5
 
+
 def get_model(model_name):
     match model_name:
-        case 'gpt35':
+        case "gpt35":
             return GPTModel({"model_name": "gpt-3.5-turbo-0125"})
-        case 'gpt4':
+        case "gpt4":
             return GPTModel({"model_name": "gpt-4"})
-        case 'llama2':
+        case "llama2":
             return LlamaModel({"model_name": "meta-llama/Llama-2-7b-chat-hf"})
-        case 'llama3':
+        case "llama3":
             return LlamaModel({"model_name": "meta-llama/Meta-Llama-3-8B-Instruct"})
-        
+
+
 def get_all_models():
     gpt35 = GPTModel({"model_name": "gpt-3.5-turbo-0125"})
     gpt4 = GPTModel({"model_name": "gpt-4"})
